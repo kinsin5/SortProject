@@ -104,7 +104,6 @@ namespace Projekt3
             i = l;
             j = p;
             x = t[(l + p) / 2]; // (pseudo)mediana
-            
             do
             {
                 while (t[i] < x) i++; // przesuwamy indeksy z lewej
@@ -135,7 +134,7 @@ namespace Projekt3
                     //x = t[(l + p) / 2];// analogicznie do wersji rekurencyjnej
                     //x = t[p];
                     //x = t[pivot = rnd.Next() % (p - l) + l];
-                    x = t[DiffPivot(l, p, swi)];
+                    x = t[DiffPivot(l, p, swi)]; // WYBIERANIE KLUCZA 
                     do
                     {
                         while (t[i] < x) i++;
@@ -152,13 +151,13 @@ namespace Projekt3
             } while (sp >= 0); // dopóki stos żądań nie będzie pusty
         } /* qsort_it() */
 
-        public int RandPivot(int l, int p)
+        public int RandPivot(int l, int p) // FUNKCJA DO LOSOWEGO KLUCZA
         {
             Random rnd = new Random();
             int pivot = rnd.Next() % (p - l) + l;
             return pivot;
         }
-        public int DiffPivot(int l, int p, int i) 
+        public int DiffPivot(int l, int p, int i)  // FUNKCJA WYBIERAJĄCA KLUCZ
         {
             switch (i)
             {
