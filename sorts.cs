@@ -104,7 +104,7 @@ namespace Projekt3
             i = l;
             j = p;
             x = t[(l + p) / 2]; // (pseudo)mediana
-            //x = t[p];
+            
             do
             {
                 while (t[i] < x) i++; // przesuwamy indeksy z lewej
@@ -119,7 +119,7 @@ namespace Projekt3
             if (l < j) qsort(t, l, j); // sortujemy lewą część (jeśli jest)
             if (i < p) qsort(t, i, p); // sortujemy prawą część (jeśli jest)
         } /* qsort() */
-        public void qsort_it(int[] t)
+        public void qsort_it(int[] t, int swi)
         {
             int i, j, l, p, sp;
             int[] stos_l = new int[t.Length],
@@ -131,7 +131,11 @@ namespace Projekt3
                 do
                 {
                     int x;
-                    i = l; j = p; x = t[(l + p) / 2]; // analogicznie do wersji rekurencyjnej
+                    i = l; j = p;
+                    //x = t[(l + p) / 2];// analogicznie do wersji rekurencyjnej
+                    //x = t[p];
+                    //x = t[pivot = rnd.Next() % (p - l) + l];
+                    x = t[DiffPivot(l, p, swi)];
                     do
                     {
                         while (t[i] < x) i++;
@@ -148,5 +152,26 @@ namespace Projekt3
             } while (sp >= 0); // dopóki stos żądań nie będzie pusty
         } /* qsort_it() */
 
+        public int RandPivot(int l, int p)
+        {
+            Random rnd = new Random();
+            int pivot = rnd.Next() % (p - l) + l;
+            return pivot;
+        }
+        public int DiffPivot(int l, int p, int i) 
+        {
+            switch (i)
+            {
+                case 0:
+                    return (l + p) / 2;
+                case 1:
+                    return p;
+                case 2:
+                    return RandPivot(l, p);
+                default:
+                    break;
+            }
+            return 0;
+        }
     }
 }

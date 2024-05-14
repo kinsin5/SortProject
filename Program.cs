@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -8,7 +9,8 @@ namespace Projekt3
     {
         static sorts sort  = new sorts();
         static int[] t = new int[50000];
-        const int NIter = 1;
+        const int NIter = 3; // FOR QUICK SORT
+        //const int NIter = 1; // FOR BASIC SORT
         const int Consta = 5;
         static Random rnd = new Random(Guid.NewGuid().GetHashCode());
         static void GenerateAscendingArray(int[] t)
@@ -35,6 +37,20 @@ namespace Projekt3
             }
             //return t;
         }
+        static void GenerateAShape(int[] t)
+        {
+            int n = t.Length;
+            int middle = n / 2;
+            for (int i = 0; i < middle; i++)
+            {
+                t[i] = i * 2;
+            }
+            for (int i = middle; i < n; i++)
+            {
+                t[i] = n - 1 - (i - middle) * 2;
+            }
+            //return t;
+        }
         static void GenerateRandomArray(int[] t, Random rnd, int maxValue = int.MaxValue)
         {
             for (int i = 0; i < t.Length; ++i)
@@ -52,6 +68,27 @@ namespace Projekt3
         static string TimerGetTime(sorts[] sort, int[] t) 
         {
             return "xd";
+        }
+        static string SortTimeQuick(int c, int[] t) //TIME FOR QUICKSORT WITH DIFFRENT PIVOT VALUES
+        {
+            double ElapsedSeconds;
+            long ElapsedTime = 0, MinTime = long.MaxValue, MaxTime = long.MinValue, IterationElapsedTime;
+
+            for (int i = 0; i < (NIter + 2); ++i)
+            {
+
+                long start = Stopwatch.GetTimestamp();
+                sort.qsort_it(t, c);
+                long end = Stopwatch.GetTimestamp();
+                IterationElapsedTime = end - start;
+                ElapsedTime += IterationElapsedTime;
+                if (IterationElapsedTime > MaxTime) MaxTime = IterationElapsedTime;
+                if (IterationElapsedTime < MinTime) MinTime = IterationElapsedTime;
+            }
+            ElapsedTime -= MaxTime + MinTime;
+            ElapsedSeconds = ElapsedTime * (1.0 / (NIter * Stopwatch.Frequency));
+            Console.Write("\t" + ElapsedSeconds.ToString("F10"));
+            return ElapsedSeconds.ToString("F10");
         }
         static string SortTime(int c,int[] t)
         {
@@ -93,6 +130,12 @@ namespace Projekt3
                 case 3:
                     //Console.WriteLine("SelectionSort");
                     sort.SelectionSort(t);
+                    break;
+                case 4:
+                    sort.qsort(t, 0, t.Length - 1);
+                    break;
+                case 5:
+                    sort.qsort_it(t, 0);
                     break;
                 default:
                     break;
@@ -139,21 +182,8 @@ namespace Projekt3
                     break;
             }
         }
-        static void Tester()
+        static void BasicSorts()
         {
-            GenerateDescendingArray(t);
-            sort.qsort(t, 0, t.Length - 1);
-            //foreach (int item in t) Console.Write(item + " ");
-        }
-        static void Main(string[] args)
-        {
-            /*
-              for (int i = 50000; i < 1000001; i += 10000) CZY DLA RÓŻNYCH TABLIC CZY JEDNEJ ROZMIAR TABLICY?
-            {
-                int[] t = new int[i];
-                GenerateDescendingArray(t);
-            } */
-            /*
             Console.WriteLine("\t\tTIME ANALYSIS 4 DIFFRENT SORT ALGORITHMS");
             Console.WriteLine("for table of {0} elements", t.Length);
             Console.WriteLine("Table\tHeapSort\t CoctailSort\t InsertionSort \t SelectionSort");
@@ -168,17 +198,70 @@ namespace Projekt3
                         GenChoose(j, t);
                         //foreach (int item in t) Console.Write(" " + item);
                         writer.Write(SortTime(i, t) + ";");
-                    }                    
+                    }
                 }
-            } 
-            */
+            }
+        }
+        static void QuickSortI()
+        {
+            Console.Write("\n\n");
+            Console.WriteLine("  TIME ANALYSIS 2 QUICK SORTS FOR RAND ARRAY");
+            Console.WriteLine("ARRAY\t RECURSIVE\tDIY STACK");
+            using (StreamWriter writer = new StreamWriter("C:\\Users\\jakob\\OneDrive\\Pulpit\\c#\\Algorytmy\\Projekt3\\results_quick.txt"))
+            {
+                for (int i = 50000; i < 200001; i += 10000) //CZY DLA RÓŻNYCH TABLIC CZY JEDNEJ ROZMIAR TABLICY?   
+                {
+                    int[] x = new int[i];
+                    Console.Write(x.Length);
+                    writer.Write(x.Length + ";");
+                    for (int j = 4; j < 6; j++)
+                    {
+                        GenerateRandomArray(x, rnd);
+                        writer.Write(SortTime(j, x) + ";");
+                    }
+                    writer.Write('\n');
+                    Console.Write("\n");
+                }
+            }
+        }
+        static void QuickSortIIKey()
+        {
+            Console.Write("\n");
+            Console.WriteLine("QUICK SORT WITH DIFFRENT KEY ANALYSIS");
+            Console.WriteLine("Table\tMedian\t\tExtremeRight\tRandomPivot");
+            using (StreamWriter writer = new StreamWriter("C:\\Users\\jakob\\OneDrive\\Pulpit\\c#\\Algorytmy\\Projekt3\\results_pivot_key.txt"))
+            {
+                for (int i = 50000; i < 100001; i += 5000) //CZY DLA RÓŻNYCH TABLIC CZY JEDNEJ ROZMIAR TABLICY?
+                {
+                    int[] x = new int[i];
+                    writer.Write(x.Length);
+                    Console.Write(x.Length);
+                    for (int j = 0; j < 3; j++)
+                    {
+                        GenerateDescendingArray(x);
+                        writer.Write(";" + SortTimeQuick(j, x));
+                    }
+                    Console.Write("\n");
+                    writer.Write('\n');
+                }
+            }
+        }
+        static void Tester()
+        {
+            //QuickSortI(); // BADANIE 1 częsci polecenia III
+            //QuickSortIIKey(); // BADANIE 2 częsci polecenia III
+        }
+        static void Main(string[] args)
+        {
+            //BasicSorts();
             /////////////////////////////// QUICK SORT //////////////////////////////////////
-            
+
+           
             Thread TesterThread = new Thread(Program.Tester, 8 * 1024 * 1024); // utworzenie wątku
             TesterThread.Start(); // uruchomienie wątku
             TesterThread.Join(); // oczekiwanie na zakończenie wątku
             
-            //////// METODA NA WYBIERANIE PARAMETRU t[p] - mediany, do quicksorta i to na tyle narazie
+            
         }
     }
 }
