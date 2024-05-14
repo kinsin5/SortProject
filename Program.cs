@@ -64,11 +64,6 @@ namespace Projekt3
                 t[i] = Consta;
             }
         }
-
-        static string TimerGetTime(sorts[] sort, int[] t) 
-        {
-            return "xd";
-        }
         static string SortTimeQuick(int c, int[] t) //TIME FOR QUICKSORT WITH DIFFRENT PIVOT VALUES
         {
             double ElapsedSeconds;
@@ -246,22 +241,19 @@ namespace Projekt3
                 }
             }
         }
-        static void Tester()
+        static void Tester() // QUICK SORT //
         {
-            //QuickSortI(); // BADANIE 1 częsci polecenia III
-            //QuickSortIIKey(); // BADANIE 2 częsci polecenia III
+            QuickSortI(); // BADANIE 1 częsci polecenia III
+            QuickSortIIKey(); // BADANIE 2 częsci polecenia III
         }
         static void Main(string[] args)
         {
-            //BasicSorts();
+            BasicSorts(); //BADANIE I, II polecenia
             /////////////////////////////// QUICK SORT //////////////////////////////////////
-
-           
             Thread TesterThread = new Thread(Program.Tester, 8 * 1024 * 1024); // utworzenie wątku
             TesterThread.Start(); // uruchomienie wątku
             TesterThread.Join(); // oczekiwanie na zakończenie wątku
-            
-            
+
         }
     }
 }
