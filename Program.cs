@@ -183,7 +183,7 @@ namespace Projekt3
             //Console.WriteLine("Table\tHeapSort\t CoctailSort\t InsertionSort \t SelectionSort");
             using (StreamWriter writer = new StreamWriter("C:\\Users\\jakob\\OneDrive\\Pulpit\\c#\\Algorytmy\\Projekt3\\results.txt"))
             {
-                for (int i = 10000; i < 25001; i += 1000)
+                for (int i = 10000; i < 85001; i += 5000)
                 {
                     int[] x = new int[i];
                     
@@ -251,7 +251,7 @@ namespace Projekt3
         static void Tester() // QUICK SORT //
         {
             QuickSortI(); // BADANIE 1 częsci polecenia III
-            //QuickSortIIKey(); // BADANIE 2 częsci polecenia III
+            QuickSortIIKey(); // BADANIE 2 częsci polecenia III
         }
         static void Main(string[] args)
         {
