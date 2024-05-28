@@ -180,19 +180,26 @@ namespace Projekt3
         static void BasicSorts()
         {
             Console.WriteLine("\t\tTIME ANALYSIS 4 DIFFRENT SORT ALGORITHMS");
-            Console.WriteLine("for table of {0} elements", t.Length);
-            Console.WriteLine("Table\tHeapSort\t CoctailSort\t InsertionSort \t SelectionSort");
+            //Console.WriteLine("Table\tHeapSort\t CoctailSort\t InsertionSort \t SelectionSort");
             using (StreamWriter writer = new StreamWriter("C:\\Users\\jakob\\OneDrive\\Pulpit\\c#\\Algorytmy\\Projekt3\\results.txt"))
             {
-                for (int j = 0; j < 5; j++)
+                for (int i = 10000; i < 85001; i += 5000)
                 {
-                    Console.Write("\n" + TableChoose(j));
-                    writer.Write("\n" + TableChoose(j) + ";");
-                    for (int i = 0; i < 4; i++)
-                    {
-                        GenChoose(j, t);
-                        //foreach (int item in t) Console.Write(" " + item);
-                        writer.Write(SortTime(i, t) + ";");
+                    int[] x = new int[i];
+                    
+                    Console.Write("\n\nTable\tArray\tHeapSort\t CoctailSort\t InsertionSort \t SelectionSort");
+                    //Console.Write("\n" + x.Length);
+                    //writer.Write(x.Length + ";");
+                    for (int j = 0; j < 5; j++)
+                    {                       
+                        Console.Write("\n" + x.Length + "\t" + TableChoose(j));
+                        writer.Write("\n" + x.Length + ";" + TableChoose(j) + ";");
+                        for (int z = 0; z < 4; z++)
+                        {
+                            GenChoose(j, x); // PĘTLA FOR DLA ROZNYCH ROZMIAROW TABLIC TU MUSISZ ZROBIĆ
+                                             //foreach (int item in t) Console.Write(" " + item);
+                            writer.Write(SortTime(z, x) + ";");
+                        }
                     }
                 }
             }
@@ -248,7 +255,7 @@ namespace Projekt3
         }
         static void Main(string[] args)
         {
-            BasicSorts(); //BADANIE I, II polecenia
+            BasicSorts(); //BADANIE I, II polecenia TABLICE [50 - 200k] W PĘTLI
             /////////////////////////////// QUICK SORT //////////////////////////////////////
             Thread TesterThread = new Thread(Program.Tester, 8 * 1024 * 1024); // utworzenie wątku
             TesterThread.Start(); // uruchomienie wątku
